@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Pour Lucas 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{ box-sizing:border-box; font-family:'Segoe UI', sans-serif; margin:0; padding:0; }
+
+body{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    overflow:hidden;
+}
+
+/* ----------- PHOTOS ----------- */
+.background{ 
+    position:fixed; 
+    width:100%; 
+    height:100%; 
+    z-index:-2; 
+    display:flex; 
+    flex-wrap:wrap; 
+    justify-content:center; 
+    align-items:center;
+    gap:30px;
+    padding:30px;
+}
+
+.photo{
+    width:260px; 
+    height:360px; 
+    border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.photo:hover{ transform:scale(1.05); }
+
+.photo img{ width:100%; height:100%; object-fit:cover; border-radius:10px; }
+
+/* Responsive */
+@media (max-width: 900px){
+    .photo{ width:180px; height:250px; }
+}
+
+@media (max-width: 500px){
+    .photo{ width:140px; height:200px; }
+}
+
+/* ----------- CARTE ----------- */
+.card{
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+    max-width:350px;
+    border:1px solid rgba(255,255,255,0.4);
+    z-index:5;
+    transition: background 1s, border 1s, transform 15s ease;
+}
+
+/* Animation descente */
+.card.slide-down{
+    transform: translateY(120vh);
+    background: transparent;
+    border: none;
+}
+
+/* ----------- TITRE ET TEXTE ----------- */
+h1{
+    color:white; text-shadow:0 0 10px rgba(0,0,0,0.4);
+    animation: heartbeat 2s infinite;
+}
+
+@keyframes heartbeat{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.05);}
+}
+
+p{
+    color:white; text-shadow:0 0 8px rgba(0,0,0,0.4);
+    font-size:18px;
+}
+
+/* ----------- BOUTONS ----------- */
+.buttons{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    cursor:pointer;
+    background:#ff4d6d;
+    color:white;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+    background:#ff1e4d;
+}
+
+#finalMessage{
+    display:none;
+    color:white;
+    margin-top:20px;
+    font-size:20px;
+    text-shadow:0 0 10px rgba(0,0,0,0.5);
+    z-index:6;
+    position:relative;
+}
+
+/* ----------- COEURS FINAUX ----------- */
+.heart{
+    position:absolute; font-size:25px;
+    animation: float 5s linear infinite;
+    opacity:0.8; z-index:-1;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);opacity:0;}
+    50%{opacity:1;}
+    100%{transform:translateY(-800px);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="photo"><img src="20250812_194449.JPG"></div>
+    <div class="photo"><img src="a2ee6b85-e963-45ae-9625-188367da526c.JPG"></div>
+    <div class="photo"><img src="DSC04109.JPG"></div>
+</div>
+
+<div class="card" id="card">
+    <h1>Lucas 💖</h1>
+    <p>Veux-tu être mon Valentin ? 💌</p>
+
+    <div class="buttons" id="buttonContainer">
+        <button id="yesBtn">Oui 😍</button>
+        <button id="noBtn">Non 😢</button>
+    </div>
+
+    <div id="finalMessage">
+        💘 Je t’aime <br> Joyeuse Saint Valentin 💘
+    </div>
+</div>
+
+<script>
+let clickCount=0;
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const container=document.getElementById("buttonContainer");
+const finalMessage=document.getElementById("finalMessage");
+const card=document.getElementById("card");
+
+/* ---------- BOUTON NON ---------- */
+noBtn.addEventListener("mouseenter", ()=>{
+    noBtn.style.transform="translate("+ (Math.random()*120-60) +"px,"+ (Math.random()*60-30) +"px)";
+});
+noBtn.addEventListener("click",(e)=>{ e.preventDefault(); });
+
+/* ---------- BOUTON OUI ---------- */
+yesBtn.addEventListener("click",()=>{
+    clickCount++;
+    yesBtn.style.display="none";
+    noBtn.style.display="none";
+
+    if(clickCount<5){
+        setTimeout(()=>{
+            yesBtn.style.display="inline-block";
+            yesBtn.style.position="absolute";
+            yesBtn.style.left=Math.random()*200+"px";
+            yesBtn.style.top=Math.random()*60+"px";
+        },500);
+    }else{
+        container.style.display="none";
+        finalMessage.style.display="block";
+        // On fait descendre la carte pour voir les photos
+        card.classList.add("slide-down");
+        startHearts();
+    }
+});
+
+/* ---------- COEURS FINAUX ---------- */
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML=["💖","💘","💕","💓","❤️"][Math.floor(Math.random()*5)];
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.bottom="-20px";
+    heart.style.fontSize=(Math.random()*20+15)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+}
+
+function startHearts(){
+    for(let i=0;i<80;i++){
+        setTimeout(createHeart,i*80);
+    }
+}
+</script>
+
+</body>
+</html>
